@@ -1,0 +1,28 @@
+root = "."
+out = "pyrightconfig.json"
+python_version = "3.11"
+python_platform = "All"
+type_checking_mode = "off"
+include = ["packages"]
+exclude = ["**/node_modules", "**/.venv", "**/__pycache__", "**/dist", "**/build"]
+shared_roots = []
+append_catch_all = true
+
+[discovery]
+provider = "manifest"
+
+[discovery.manifest.packages.alpha]
+root = "packages/alpha"
+extra_paths = ["packages/alpha/src", "packages/alpha/vendor", "shared-kernel/src"]
+
+[discovery.manifest.packages.beta]
+root = "packages/beta"
+extra_paths = ["packages/beta/src", "packages/beta/vendor", "shared-kernel/src"]
+
+[discovery.manifest.packages.gamma]
+root = "packages/gamma"
+extra_paths = ["packages/gamma/src", "shared-kernel/src"]
+
+[discovery.manifest.packages.delta]
+root = "packages/delta"
+extra_paths = ["packages/delta/src", "packages/delta/vendor", "shared-kernel/src"]

@@ -1,0 +1,20 @@
+root = "."
+out = "pyrightconfig.json"
+python_version = "3.11"
+python_platform = "All"
+type_checking_mode = "off"
+include = ["packages"]
+exclude = ["**/node_modules", "**/.venv", "**/__pycache__", "**/dist", "**/build"]
+shared_roots = ["shared-kernel/src"]
+append_catch_all = true
+
+[discovery]
+provider = "layout"
+
+[discovery.layout]
+packages = "packages/*"
+source_dirs = ["src"]
+vendor_dirs = ["vendor"]
+test_dirs = ["tests", "test"]
+require_python = true
+skip_prefixes = ["_", "."]

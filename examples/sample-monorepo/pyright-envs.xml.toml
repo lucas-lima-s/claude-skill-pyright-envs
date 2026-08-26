@@ -1,0 +1,23 @@
+root = "."
+out = "pyrightconfig.json"
+python_version = "3.11"
+python_platform = "All"
+type_checking_mode = "off"
+include = ["packages"]
+exclude = ["**/node_modules", "**/.venv", "**/__pycache__", "**/dist", "**/build"]
+shared_roots = ["shared-kernel/src"]
+append_catch_all = true
+
+[discovery]
+provider = "xml"
+
+[discovery.xml]
+files = "deploy/*/launcher*.xml"
+path_list_selector = ".//group[@name='Process']/key[@name='Arguments']/array/string"
+skip_first_if_matches = "^run.*\\.py$"
+root_pattern = "^\\.\\./packages/(?P<name>[^/]+)/src/?$"
+root_template = "packages/{name}"
+path_prefix_strip = "../"
+
+[discovery.xml.suffix_map]
+".pkg" = "shared-kernel/src"
