@@ -6,4 +6,4 @@ __pycache__/
 .venv/
 .env
 
-/pyrightconfig.json
+pyrightconfig.json
