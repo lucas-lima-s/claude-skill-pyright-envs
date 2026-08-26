@@ -201,7 +201,12 @@ def main(argv: list[str] | None = None) -> int:
         envs, packages = _build_environments(cfg, root, diagnostics)
         content = _render(cfg, envs, config_path)
 
-        out_arg = args.out if args.out else cfg.get("out", DEFAULTS["out"])
+        if args.out:
+            out_arg = args.out
+            out_path = None if out_arg == "-" else Path(out_arg)
+        else:
+            out_arg = cfg.get("out", DEFAULTS["out"])
+            out_path = None if out_arg == "-" else root / out_arg
 
         if not args.quiet:
             print(
@@ -211,9 +216,8 @@ def main(argv: list[str] | None = None) -> int:
             )
 
         if args.check:
-            if out_arg == "-":
+            if out_path is None:
                 raise PyrightEnvsError("--check cannot be combined with --out -")
-            out_path = Path(out_arg)
             existing_content = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             if existing_content == content:
                 return 0
@@ -226,10 +230,10 @@ def main(argv: list[str] | None = None) -> int:
             sys.stderr.writelines(diff)
             return 1
 
-        if out_arg == "-":
+        if out_path is None:
             sys.stdout.write(content)
         else:
-            Path(out_arg).write_text(content, encoding="utf-8", newline="\n")
+            out_path.write_text(content, encoding="utf-8", newline="\n")
         return 0
     except PyrightEnvsError as exc:
         print(f"error: {exc}", file=sys.stderr)
